@@ -10,7 +10,7 @@ This dashboard fulfills the requirements of a modern weather analytics applicati
     *   Each card shows current temperature, a relevant weather condition icon, humidity, and wind speed.
     *   Supports real-time updates for current weather data.
 *   **Detailed View (Modal):** Clicking a city card opens a modal with in-depth analytics.
-    *   Includes a 5-7 day weather forecast summary.
+    *   Includes a next 5 day weather forecast summary.
     *   Provides hour-by-hour forecast data for closer inspection.
     *   Displays detailed current stats such as pressure, humidity, visibility, cloudiness, and an approximation of dew point.
 *   **Search & Favorites:**
