@@ -98,14 +98,15 @@ npm start
 ```
 
 This will open the application in your default web browser at http://localhost:3000.
-Usage
-Search for Cities: Use the search bar at the top to type a city name. A list of matching cities will appear below the search bar.
-Add to Favorites: Click the "Add" button next to a city in the search results to add it to your dashboard.
-View Dashboard: Favorite cities will appear as cards on the main screen, showing current weather conditions.
-Detailed Forecast: Click on any city card to open a modal displaying a 5-7 day forecast, hourly trends, and detailed weather statistics.
-Toggle Units: Use the Celsius/Fahrenheit switch in the header to change the temperature unit displayed across the application.
-Remove Favorites: Click the "X" icon on a city card to remove it from your favorites.
-Persistence: Your favorite cities and preferred unit are saved in your browser's local storage and will be remembered on your next visit.
+
+### Usage
+* **Search for Cities**: Use the search bar at the top to type a city name. A list of matching cities will appear below the search bar.
+* **Add to Favorites**: Click the "Add" button next to a city in the search results to add it to your dashboard.
+* **View Dashboard**: Favorite cities will appear as cards on the main screen, showing current weather conditions.
+* **Detailed Forecast**: Click on any city card to open a modal displaying a 5-7 day forecast, hourly trends, and detailed weather statistics.
+* **Toggle Units**: Use the Celsius/Fahrenheit switch in the header to change the temperature unit displayed across the application.
+* **Remove Favorites**: Click the "X" icon on a city card to remove it from your favorites.
+* **Persistence**: Your favorite cities and preferred unit are saved in your browser's local storage and will be remembered on your next visit.
 
 ### Project Structure
 The project is organized into logical directories for maintainability and scalability:
@@ -129,20 +130,21 @@ src/
 
 ### API Integration Details
 The application primarily uses the OpenWeatherMap API for fetching weather data.
-Asynchronous Data Fetching: Redux Toolkit's createAsyncThunk is used to handle asynchronous API calls for current weather, forecast data, and city search.
-Endpoints Used:
-data/2.5/weather: For current weather conditions.
-data/2.5/forecast: For 5-day / 3-hour forecasts.
-data/2.5/find: For searching cities by name with autocomplete suggestions.
-API Key Handling: The API key is stored in src/utils/constants.js and included in all API requests.
-Rate Limiting: While the free OpenWeatherMap plan has rate limits, the lodash.debounce utility on the search bar helps mitigate rapid requests.
-State Management (Redux Toolkit)
-Centralized State: All core application data, including favorite cities, current weather data, forecasts, search results, and unit preferences, is managed centrally using Redux.
-Redux Toolkit createSlice: Simplifies Redux development by combining reducers, action types, and action creators into a single file (weatherSlice.js).
-createAsyncThunk: Handles the lifecycle of asynchronous API requests (pending, fulfilled, rejected states) and updates the Redux store accordingly.
-Persistence: src/utils/localStorage.js handles saving and loading specific parts of the Redux state (favorite cities, unit preference) to and from the browser's local storage, ensuring data persists across sessions.
-Data Caching
-To reduce redundant API calls and improve performance, a simple caching mechanism is implemented for current weather and forecast data:
-When fetchCurrentWeather or fetchForecast is called, the application first checks if valid data for that city exists in the Redux store's cache.
-Data is considered valid if it was fetched within a CACHE_DURATION (e.g., 5 minutes, configurable in src/utils/constants.js).
-If cached data is fresh, it's returned immediately; otherwise, a new API call is made.
+* **Asynchronous Data Fetching**: Redux Toolkit's createAsyncThunk is used to handle asynchronous API calls for current weather, forecast data, and city search.
+* **Endpoints Used**:
+   * data/2.5/weather: For current weather conditions.
+   * data/2.5/forecast: For 5-day / 3-hour forecasts.
+   * data/2.5/find: For searching cities by name with autocomplete suggestions.
+* **API Key Handling**: The API key is stored in src/utils/constants.js and included in all API requests.
+* **Rate Limiting**: While the free OpenWeatherMap plan has rate limits, the lodash.debounce utility on the search bar helps mitigate rapid requests.
+
+### State Management (Redux Toolkit)
+* **Centralized State**: All core application data, including favorite cities, current weather data, forecasts, search results, and unit preferences, is managed centrally using Redux.
+* **Redux Toolkit createSlice**: Simplifies Redux development by combining reducers, action types, and action creators into a single file (weatherSlice.js).
+* **createAsyncThunk**: Handles the lifecycle of asynchronous API requests (pending, fulfilled, rejected states) and updates the Redux store accordingly.
+* **Persistence**: src/utils/localStorage.js handles saving and loading specific parts of the Redux state (favorite cities, unit preference) to and from the browser's local storage, ensuring data persists across sessions.
+## Data Caching
+* To reduce redundant API calls and improve performance, a simple caching mechanism is implemented for current weather and forecast data:
+* When fetchCurrentWeather or fetchForecast is called, the application first checks if valid data for that city exists in the Redux store's cache.
+* Data is considered valid if it was fetched within a CACHE_DURATION (e.g., 5 minutes, configurable in src/utils/constants.js).
+* If cached data is fresh, it's returned immediately; otherwise, a new API call is made.
