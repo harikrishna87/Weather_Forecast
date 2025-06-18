@@ -184,7 +184,7 @@ const Dashboard = () => {
                       display: 'block',
                       marginBottom: '8px'
                     }}>
-                      No favorite cities yet
+                      No favourite cities yet
                     </Text>
                     <Text style={{ 
                       fontSize: isMobile ? '12px' : '14px', 
