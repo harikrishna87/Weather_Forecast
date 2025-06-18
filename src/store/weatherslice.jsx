@@ -13,7 +13,6 @@ const initialState = {
   error: null,
 };
 
-// Load preloaded state with fallback
 const preloadedState = (() => {
   try {
     const saved = loadState('weatherState');
@@ -35,7 +34,6 @@ export const fetchCurrentWeather = createAsyncThunk(
         return rejectWithValue('City not found in favorites');
       }
 
-      // Check cache
       const cachedData = weather.currentWeather[city.id];
       if (cachedData && (Date.now() - cachedData.timestamp < CACHE_DURATION)) {
         return { id: city.id, data: cachedData.data, fromCache: true };
@@ -47,7 +45,7 @@ export const fetchCurrentWeather = createAsyncThunk(
           appid: API_KEY,
           units: weather.unit,
         },
-        timeout: 10000, // 10 second timeout
+        timeout: 10000,
       });
 
       return { id: city.id, data: response.data, fromCache: false };
@@ -71,7 +69,6 @@ export const fetchForecast = createAsyncThunk(
         return rejectWithValue('City not found in favorites');
       }
 
-      // Check cache
       const cachedData = weather.forecasts[city.id];
       if (cachedData && (Date.now() - cachedData.timestamp < CACHE_DURATION)) {
         return { id: city.id, data: cachedData.data, fromCache: true };
@@ -117,7 +114,6 @@ export const searchCities = createAsyncThunk(
         timeout: 10000,
       });
 
-      // Handle case where API returns no results
       if (!response.data.list || response.data.list.length === 0) {
         return [];
       }
@@ -138,7 +134,6 @@ export const searchCities = createAsyncThunk(
   }
 );
 
-// Helper function to safely save state
 const safeSaveState = (state) => {
   try {
     saveState('weatherState', state);
@@ -154,7 +149,7 @@ const weatherSlice = createSlice({
     addFavorite: (state, action) => {
       const newCity = action.payload;
       if (!newCity || !newCity.id) {
-        return; // Invalid city data
+        return;
       }
       
       if (!state.favoriteCities.some(city => city.id === newCity.id)) {
@@ -167,7 +162,6 @@ const weatherSlice = createSlice({
       const cityId = action.payload;
       state.favoriteCities = state.favoriteCities.filter(city => city.id !== cityId);
       
-      // Clean up cached data
       if (state.currentWeather[cityId]) {
         delete state.currentWeather[cityId];
       }
@@ -181,11 +175,10 @@ const weatherSlice = createSlice({
     setUnit: (state, action) => {
       const newUnit = action.payload;
       if (newUnit !== 'metric' && newUnit !== 'imperial' && newUnit !== 'kelvin') {
-        return; // Invalid unit
+        return;
       }
       
       state.unit = newUnit;
-      // Clear cached data when unit changes
       state.currentWeather = {};
       state.forecasts = {};
       safeSaveState(state);
@@ -199,18 +192,14 @@ const weatherSlice = createSlice({
       state.error = null;
     },
     
-    // Add action to clear expired cache
     clearExpiredCache: (state) => {
       const now = Date.now();
-      
-      // Clear expired weather data
       Object.keys(state.currentWeather).forEach(cityId => {
         if (now - state.currentWeather[cityId].timestamp >= CACHE_DURATION) {
           delete state.currentWeather[cityId];
         }
       });
       
-      // Clear expired forecast data
       Object.keys(state.forecasts).forEach(cityId => {
         if (now - state.forecasts[cityId].timestamp >= CACHE_DURATION) {
           delete state.forecasts[cityId];
@@ -223,7 +212,6 @@ const weatherSlice = createSlice({
   
   extraReducers: (builder) => {
     builder
-      // Current Weather Cases
       .addCase(fetchCurrentWeather.pending, (state, action) => {
         state.status = 'loading';
         state.error = null;
@@ -245,7 +233,6 @@ const weatherSlice = createSlice({
         state.error = action.payload || 'Failed to fetch current weather';
       })
       
-      // Forecast Cases
       .addCase(fetchForecast.pending, (state) => {
         state.status = 'loading';
         state.error = null;
@@ -267,7 +254,6 @@ const weatherSlice = createSlice({
         state.error = action.payload || 'Failed to fetch forecast';
       })
       
-      // Search Cities Cases
       .addCase(searchCities.pending, (state) => {
         state.status = 'loading';
         state.error = null;
