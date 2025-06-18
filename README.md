@@ -95,6 +95,7 @@ After installation and API key setup, you can start the development server:
 Using npm:
 ```bash
 npm start
+```
 
 This will open the application in your default web browser at http://localhost:3000.
 Usage
