@@ -126,7 +126,7 @@ src/
    ├── localStorage.js     # Helpers for interacting with browser local storage
    └── weatherUtils.js     # Helper functions for weather data formatting and icons
 
-API Integration Details
+### API Integration Details
 The application primarily uses the OpenWeatherMap API for fetching weather data.
 Asynchronous Data Fetching: Redux Toolkit's createAsyncThunk is used to handle asynchronous API calls for current weather, forecast data, and city search.
 Endpoints Used:
